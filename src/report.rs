@@ -1,5 +1,4 @@
-// report.rs
-use prettytable::{Table, row, cell};
+use prettytable::{Table, row};
 use crate::bench_cpu::CpuResult;
 use crate::bench_memory::MemoryResult;
 use crate::bench_disk::DiskResult;
@@ -42,13 +41,14 @@ pub fn generate_report(
 
     println!("\n=== Memory Test Results ===");
     let mut table = Table::new();
-    table.add_row(row!["Speed (GB/s)", "Read", "Write"]);
-    table.add_row(row![
-        "",
-        format!("{:.2}", mem_result.read_speed),
-        format!("{:.2}", mem_result.write_speed)
-    ]);
+    table.add_row(row!["Test Type", "Speed (GB/s)"]);
+    table.add_row(row!["Sequential Read", format!("{:.2}", mem_result.sequential_read_speed)]);
+    table.add_row(row!["Sequential Write", format!("{:.2}", mem_result.sequential_write_speed)]);
+    table.add_row(row!["Random Read", format!("{:.2}", mem_result.random_read_speed)]);
+    table.add_row(row!["Random Write", format!("{:.2}", mem_result.random_write_speed)]);
     table.printstd();
+    
+    println!("\nMemory Latency: {:.1} ns", mem_result.latency_ns);
 
     println!("\n=== Disk Test Results ===");
     let mut table = Table::new();

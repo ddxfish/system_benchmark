@@ -1,5 +1,4 @@
-// main.rs
-use std::io::{self, Read};
+use std::io::{self, Write};
 use num_cpus;
 
 mod bench_cpu;
@@ -12,17 +11,30 @@ use bench_memory::run_memory_benchmark;
 use bench_disk::run_disk_benchmark;
 use report::generate_report;
 
+fn pause_for_user() {
+    print!("\nPress Enter to continue...");
+    io::stdout().flush().unwrap();
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read input");
+}
+
 fn main() {
     // Configuration parameters
     let config = BenchmarkConfig {
         cpu_monte_carlo_single_iterations: 10_000_000_000,
-        cpu_monte_carlo_multi_iterations: 200_000_000_000, // 20x single core
-        cpu_prime_count: 100_000, // Calculate first 100K primes
+        cpu_monte_carlo_multi_iterations: 200_000_000_000,
+        cpu_prime_count: 10_000_000, // 10 million primes
         cpu_threads: num_cpus::get(),
-        memory_size_gb: 4,
+        memory_size_gb: 8,
         disk_large_file_gb: 4,
         disk_small_file_iterations: 100_000,
     };
+
+    println!("Starting system benchmark...");
+    println!("\nWarning: This benchmark will allocate up to {}GB of RAM", config.memory_size_gb);
+    pause_for_user();
+
+    println!("\n============= Running Benchmarks =============\n");
 
     // Run benchmarks
     let cpu_result = run_cpu_benchmark(
@@ -39,11 +51,13 @@ fn main() {
         config.disk_small_file_iterations,
     );
 
+    println!("\n============= Benchmark Results =============\n");
+    
     // Generate report
     generate_report(&cpu_result, &mem_result, &disk_result);
 
-    println!("\nPress any key to exit...");
-    io::stdin().read_exact(&mut [0u8]).unwrap();
+    println!("\n============= Benchmark Complete =============");
+    pause_for_user();
 }
 
 struct BenchmarkConfig {
