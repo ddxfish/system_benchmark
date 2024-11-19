@@ -1,3 +1,4 @@
+// main.rs
 use std::io::{self, Read};
 use num_cpus;
 
@@ -14,8 +15,9 @@ use report::generate_report;
 fn main() {
     // Configuration parameters
     let config = BenchmarkConfig {
-        cpu_single_iterations: 10_000_000_000,
-        cpu_multi_iterations: 200_000_000_000, // 20x single core
+        cpu_monte_carlo_single_iterations: 10_000_000_000,
+        cpu_monte_carlo_multi_iterations: 200_000_000_000, // 20x single core
+        cpu_prime_count: 100_000, // Calculate first 100K primes
         cpu_threads: num_cpus::get(),
         memory_size_gb: 4,
         disk_large_file_gb: 4,
@@ -24,8 +26,9 @@ fn main() {
 
     // Run benchmarks
     let cpu_result = run_cpu_benchmark(
-        config.cpu_single_iterations,
-        config.cpu_multi_iterations,
+        config.cpu_monte_carlo_single_iterations,
+        config.cpu_monte_carlo_multi_iterations,
+        config.cpu_prime_count,
         config.cpu_threads,
     );
 
@@ -44,8 +47,9 @@ fn main() {
 }
 
 struct BenchmarkConfig {
-    cpu_single_iterations: u64,
-    cpu_multi_iterations: u64,
+    cpu_monte_carlo_single_iterations: u64,
+    cpu_monte_carlo_multi_iterations: u64,
+    cpu_prime_count: usize,
     cpu_threads: usize,
     memory_size_gb: usize,
     disk_large_file_gb: usize,

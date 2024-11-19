@@ -1,4 +1,5 @@
-use prettytable::{Table, row};
+// report.rs
+use prettytable::{Table, row, cell};
 use crate::bench_cpu::CpuResult;
 use crate::bench_memory::MemoryResult;
 use crate::bench_disk::DiskResult;
@@ -10,13 +11,34 @@ pub fn generate_report(
 ) {
     println!("\n=== CPU Test Results ===");
     let mut table = Table::new();
-    table.add_row(row!["", "Time (s)"]);
-    table.add_row(row!["Single Core", format!("{:.2}", cpu_result.single_core_time)]);
+    
+    // Header row with test types
     table.add_row(row![
-        format!("Multi Core ({})", cpu_result.thread_count),
-        format!("{:.2}", cpu_result.multi_core_time)
+        "Test Type",
+        "Single Core (s)",
+        format!("Multi Core ({}) (s)", cpu_result.thread_count)
     ]);
+
+    // Monte Carlo PI test results
+    table.add_row(row![
+        "Monte Carlo PI",
+        format!("{:.2}", cpu_result.single_core_monte_carlo_time),
+        format!("{:.2}", cpu_result.multi_core_monte_carlo_time)
+    ]);
+
+    // Prime calculation test results
+    table.add_row(row![
+        format!("Prime Numbers ({})", cpu_result.prime_count),
+        format!("{:.2}", cpu_result.single_core_primes_time),
+        format!("{:.2}", cpu_result.multi_core_primes_time)
+    ]);
+
     table.printstd();
+
+    // Additional PI calculation results
+    println!("\nPI Calculation Results:");
+    println!("Single Core π ≈ {:.6}", cpu_result.single_core_monte_carlo_pi);
+    println!("Multi Core π ≈ {:.6}", cpu_result.multi_core_monte_carlo_pi);
 
     println!("\n=== Memory Test Results ===");
     let mut table = Table::new();
