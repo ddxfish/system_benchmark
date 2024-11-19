@@ -34,18 +34,23 @@ pub fn generate_report(
 
     table.printstd();
 
-    // Additional PI calculation results
-    println!("\nPI Calculation Results:");
-    println!("Single Core π ≈ {:.6}", cpu_result.single_core_monte_carlo_pi);
-    println!("Multi Core π ≈ {:.6}", cpu_result.multi_core_monte_carlo_pi);
-
     println!("\n=== Memory Test Results ===");
     let mut table = Table::new();
-    table.add_row(row!["Test Type", "Speed (GB/s)"]);
-    table.add_row(row!["Sequential Read", format!("{:.2}", mem_result.sequential_read_speed)]);
-    table.add_row(row!["Sequential Write", format!("{:.2}", mem_result.sequential_write_speed)]);
-    table.add_row(row!["Random Read", format!("{:.2}", mem_result.random_read_speed)]);
-    table.add_row(row!["Random Write", format!("{:.2}", mem_result.random_write_speed)]);
+    table.add_row(row![
+        "Access Pattern",
+        "Read (GB/s)",
+        "Write (GB/s)"
+    ]);
+    table.add_row(row![
+        "Sequential",
+        format!("{:.2}", mem_result.sequential_read_speed),
+        format!("{:.2}", mem_result.sequential_write_speed)
+    ]);
+    table.add_row(row![
+        "Random",
+        format!("{:.2}", mem_result.random_read_speed),
+        format!("{:.2}", mem_result.random_write_speed)
+    ]);
     table.printstd();
     
     println!("\nMemory Latency: {:.1} ns", mem_result.latency_ns);
