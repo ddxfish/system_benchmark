@@ -1,0 +1,25 @@
+System Benchmark Report
+Total Runtime: 301.87 seconds
+Memory Benchmark Results:
+Read Speed:  0.30 GB/s
+Write Speed: 0.01 GB/s
+Copy Speed:  28.56 GB/s
+
+CPU Benchmark Results:
+Single Core Tests:
+- Prime calculation: 2732380.05 primes/sec
+- Pi calculation: 171803594.13 digits/sec
+- Matrix operations: 41085309.54 ops/sec
+
+Multi Core Tests:
+- Ray tracing: 265934798.78 rays/sec
+- Compression: 56.00 MB/sec
+- Matrix operations: 754489210.80 ops/sec
+
+Disk Benchmark Results:
+Small File (100MB):
+- Read Speed:  1093.88 MB/s
+- Write Speed: 4.73 MB/s
+Large File (1GB):
+- Read Speed:  1049.41 MB/s
+- Write Speed: 19.69 MB/s

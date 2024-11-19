@@ -1,0 +1,11 @@
+[package]
+name = "monte_carlo_pi"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8"
+rayon = "1.8"
+num_cpus = "1.16"
+memmap2 = "0.5"
+prettytable-rs = "0.10"
