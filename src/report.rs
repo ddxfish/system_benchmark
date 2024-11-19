@@ -11,14 +11,14 @@ pub fn generate_report(
     println!("\n=== CPU Test Results ===");
     let mut table = Table::new();
     
-    // Header row with test types
+    // Header row with CPU configurations
     table.add_row(row![
         "Test Type",
         "Single Core (s)",
-        format!("Multi Core ({}) (s)", cpu_result.thread_count)
+        format!("{} Cores (s)", cpu_result.core_count)
     ]);
 
-    // Monte Carlo PI test results
+    // Monte Carlo test results
     table.add_row(row![
         "Monte Carlo PI",
         format!("{:.2}", cpu_result.single_core_monte_carlo_time),

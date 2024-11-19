@@ -19,18 +19,20 @@ fn pause_for_user() {
 }
 
 fn main() {
+    let physical_cores = num_cpus::get_physical();
+
     // Configuration parameters
     let config = BenchmarkConfig {
-        cpu_monte_carlo_single_iterations: 10_000_000_000,
-        cpu_monte_carlo_multi_iterations: 200_000_000_000,
+        cpu_base_monte_carlo_iterations: 10_000_000_000,
         cpu_prime_count: 10_000_000, // 10 million primes
-        cpu_threads: num_cpus::get(),
+        cpu_physical_cores: physical_cores,
         memory_size_gb: 8,
         disk_large_file_gb: 4,
         disk_small_file_iterations: 100_000,
     };
 
     println!("Starting system benchmark...");
+    println!("Detected {} physical cores", physical_cores);
     println!("\nWarning: This benchmark will allocate up to {}GB of RAM", config.memory_size_gb);
     pause_for_user();
 
@@ -38,10 +40,9 @@ fn main() {
 
     // Run benchmarks
     let cpu_result = run_cpu_benchmark(
-        config.cpu_monte_carlo_single_iterations,
-        config.cpu_monte_carlo_multi_iterations,
+        config.cpu_base_monte_carlo_iterations,
         config.cpu_prime_count,
-        config.cpu_threads,
+        config.cpu_physical_cores,
     );
 
     let mem_result = run_memory_benchmark(config.memory_size_gb);
@@ -61,10 +62,9 @@ fn main() {
 }
 
 struct BenchmarkConfig {
-    cpu_monte_carlo_single_iterations: u64,
-    cpu_monte_carlo_multi_iterations: u64,
+    cpu_base_monte_carlo_iterations: u64,
     cpu_prime_count: usize,
-    cpu_threads: usize,
+    cpu_physical_cores: usize,
     memory_size_gb: usize,
     disk_large_file_gb: usize,
     disk_small_file_iterations: usize,
